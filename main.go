@@ -1,7 +1,18 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+	"skygrid/p2p"
+)
 
 func main() {
-	fmt.Println("hello this is skygrid")
+	tr := p2p.NewTCPTransport(":3000")
+
+	if err := tr.ListenAndAccept(); err != nil {
+		log.Fatal(err)
+	}
+	
+	fmt.Println("hey")
+	select {}
 }
