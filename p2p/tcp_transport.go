@@ -70,10 +70,10 @@ func (t *TCPTransport) startAccpetLoop()  {
 	}
 }
 
-
+//handles lifecycle of a conn
 func (t *TCPTransport) handleConn(conn net.Conn)  {
 	peer := NewTCPPeer(conn, true)
-	
+	//checks for handshake to authenticate the peer
 	if err := t.HandshakeFunc(peer); err !=nil {
 		conn.Close()
 		fmt.Printf("TCP handshake error: %s\n", err)
@@ -87,6 +87,9 @@ func (t *TCPTransport) handleConn(conn net.Conn)  {
 		if err := t.Decoder.Decode(conn, msg); err != nil {
 			fmt.Printf("TCP error: %s\n", err)
 		}
+		//adds address 
+		msg.From = conn.RemoteAddr()
+		
 		fmt.Printf("message: %v\n", msg)
 	}
 }
